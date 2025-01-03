@@ -54,7 +54,7 @@ class DropMissingValStrategy(MissingValueHandlingStrategy):
         logging.info("Missing Values Dropped")
         return df_drop
     
-#Concrete strategy for dropping Missing Value
+#Concrete strategy for Filling Missing Value
 #--------------------------------------------
 class FillMissingValStrategy(MissingValueHandlingStrategy):
     def __init__(self,method ="mean", fill_value=None):
@@ -114,7 +114,7 @@ class MissingValueHandler:
         logging.info(f"Setting Missing Value Stratgy")
         self._strategy =strategy
         
-    def execute_strategy(self,df:pd.DataFrame)-> pd.DataFrame:
+    def execute_handle_missing_values(self,df:pd.DataFrame)-> pd.DataFrame:
         return self._strategy.handle(df)
     
 if __name__ == "__main__":
