@@ -57,7 +57,7 @@ class DataIngestorFactory:
 #example usage
 if __name__ == "__main__":
     
-    file_path ="data/archive.zip"
+    """ file_path ="data/archive.zip"
     
     file_extension = os.path.splitext(file_path)[1]
     
@@ -65,4 +65,5 @@ if __name__ == "__main__":
     
     df = data_ingestor.ingest(file_path)
     
-    print(df.head())
+    print(df.head()) """
+    pass
