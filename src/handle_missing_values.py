@@ -30,7 +30,7 @@ class DropMissingValStrategy(MissingValueHandlingStrategy):
         axis weather to drop rows or columns
         axis = 0 MEANS drop Rows
         
-        thresh -> Min number of Nan values require to keep the row and coloumns
+        thresh -> Minimum number of non-NaN values required to retain a row or column.
 
         Args:
             axis (int, optional): _description_. Defaults to 0.
@@ -100,8 +100,11 @@ class FillMissingValStrategy(MissingValueHandlingStrategy):
         else:
             logging.warning(f"Unknown Mewthod '{self.method}'.None")
             
+            
         logging.info("Missing Values filled")
         return df_fill
+    
+
     
 #Context Class
 #-------------
