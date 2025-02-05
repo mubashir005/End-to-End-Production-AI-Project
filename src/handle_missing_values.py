@@ -68,41 +68,41 @@ class FillMissingValStrategy(MissingValueHandlingStrategy):
         self.method=method
         self.fill_value= fill_value
         
-    def handle(self, df:pd.DataFrame):
+    def handle(self, df: pd.DataFrame):
         """
-        Fill missing values in the rows and coluomns
+        Fill missing values in the rows and columns.
 
         Args:
-            df (pd.DataFrame): _description_
+            df (pd.DataFrame): Input DataFrame with missing values.
+
+        Returns:
+            pd.DataFrame: DataFrame with missing values handled.
         """
-        logging.info ("Filling Missing values with Method = {self.method} and fill_value = {self.fill_value}")
-        df_fill = df.copy()
-        if self.method =="mean":
-            numericcol =df_fill.select_dtypes(include="number").columns
-            df_fill[numericcol] =df_fill[numericcol].fillna(
-                df[numericcol].mean()
-            )
-            
-            
-        elif self.method =="median":
-            numericcol =df_fill.select_dtypes(include="number").columns
-            df_fill[numericcol] =df_fill[numericcol].fillna(
-                df[numericcol].median()
-            )
-            
-        elif self.method =="mode":
-            for column in df_fill.columns:
-                df_fill[column].fillna(df[column].mode().iloc(0),inplace="True")
+        df_cleaned = df.copy()
         
-        elif self.method =="constant":
-            df_fill=df_fill.fillna(self.fill_value)
-            
+        if self.method == "mean":
+            numeric_columns = df_cleaned.select_dtypes(include="number").columns
+            df_cleaned[numeric_columns] = df_cleaned[numeric_columns].apply(
+                lambda col: col.fillna(col.mean()), axis=0
+            )
+        elif self.method == "median":
+            numeric_columns = df_cleaned.select_dtypes(include="number").columns
+            df_cleaned[numeric_columns] = df_cleaned[numeric_columns].apply(
+                lambda col: col.fillna(col.median()), axis=0
+            )
+        elif self.method == "mode":
+            for column in df_cleaned.columns:
+                if df_cleaned[column].isnull().any():
+                    mode_value = df[column].mode()
+                    if not mode_value.empty:
+                        df_cleaned[column].fillna(mode_value.iloc[0], inplace=True)
+        elif self.method == "constant":
+            df_cleaned.fillna(self.fill_value, inplace=True)
         else:
-            logging.warning(f"Unknown Mewthod '{self.method}'.None")
-            
-            
-        logging.info("Missing Values filled")
-        return df_fill
+            logging.warning(f"Unknown method '{self.method}'. No missing values handled.")
+
+        logging.info("Missing values filled.")
+        return df_cleaned
     
 
     
